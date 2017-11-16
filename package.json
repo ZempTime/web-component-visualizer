@@ -1,0 +1,15 @@
+{
+  "name": "web-component-visualizer",
+  "version": "1.0.0",
+  "description": "Visualize hierarchy, data, and events of your web components.",
+  "main": "devToolsBackground.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Zempel",
+  "license": "ISC",
+  "dependencies": {
+    "@polymer/polymer": "^2.2.0",
+    "@webcomponents/webcomponentsjs": "^1.0.18"
+  }
+}

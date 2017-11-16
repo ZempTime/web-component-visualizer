@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <title>Web Component Visualizer</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .container {
+        display: flex;
+      }
+      .left {
+        flex: 1 2 auto;
+        background-color: red;
+      }
+      .right {
+        flex: 1 3 auto;
+        background-color: green;
+      }
+    </style>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../node_modules/@polymer/polymer/polymer-element.html"></link>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left"> </div>
+      <div class="right"> </div>
+    </div>
+  </body>
+</html>
