@@ -9,7 +9,6 @@
   "author": "Chris Zempel",
   "license": "ISC",
   "dependencies": {
-    "@polymer/polymer": "^2.2.0",
-    "@webcomponents/webcomponentsjs": "^1.0.18"
+    "eslint-plugin-html": "^4.0.0"
   }
 }

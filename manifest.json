@@ -4,17 +4,9 @@
   "description": "Visualize hierarchy, data, and events of your web components.",
   "devtools_page": "devtoolsBackground.html",
   "manifest_version": 2,
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "icons": {
     "128": "img/web-components_128x128.png",
     "256": "img/web-components_256x256.png"
   },
-  "permissions": ["<all_urls>", "webNavigation"],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["perfContentScript.js"],
-      "run_at": "document_start"
-    }
-  ]
+  "permissions": ["activeTab", "<all_urls>"]
 }
