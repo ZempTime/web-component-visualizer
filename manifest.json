@@ -2,17 +2,11 @@
   "name": "Web Component Visualizer",
   "version": "0.0.0",
   "description": "Visualize hierarchy, data, and events of your web components.",
-  "devtools_page": "devtoolsBackground.html",
+  "devtools_page": "devtools.html",
   "manifest_version": 2,
   "icons": {
     "128": "img/web-components_128x128.png",
     "256": "img/web-components_256x256.png"
   },
-  "content_scripts": [
-    {
-      "matches": ["https://polymer-knowledge-center.firebaseapp.com/"],
-      "js": ["builder.js"]
-    }
-  ],
   "permissions": ["activeTab", "<all_urls>"]
 }
