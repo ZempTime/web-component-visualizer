@@ -5,10 +5,8 @@ if (panels) {
   panels.create('WC Visualizer', 'img/web_components.png', 'src/panel.html');
 }
 
-// var toEval = JsonifyWindow.toString() + "; var jw = new JsonifyWindow(document); jw.run();"
-// console.log(toEval);
-
-var toEval = "document.body.children.length;"
+var toEval = `var jsonifyWindow = ${jsonifyWindow.toString()}; jsonifyWindow(document);`;
+console.log(toEval);
 
 chrome.devtools.inspectedWindow.eval(
   toEval,
