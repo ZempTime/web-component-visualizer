@@ -24,11 +24,17 @@ var jsonifyWindow = (document) => {
     }
   }
 
+  const serializeProperties = (target) => {
+    // TODO: Pull in more of the property definitions
+    return Object.keys(target.__proto__.constructor.__classProperties);
+  }
+
   const serializeState = (target) => {
     var serialized = {};
+    var propertyKeys = Object.keys(target.__proto__.constructor.__classProperties);
     var object = target.__data;
 
-    Object.keys(object).forEach((item) => {
+    serializeProperties(target).forEach((item) => {
       var name = item;
       var value = object[item];
       if (typeof value === "function") return;
@@ -57,9 +63,9 @@ var jsonifyWindow = (document) => {
   const serializeElement = (target) => {
     return {
       tagName: target.tagName.toLowerCase(),
+      properties: serializeProperties(target),
       attributes: serializeAttributes(target),
       state: serializeState(target),
-      // properties: target.__proto__.constructor.__classProperties,
     }
   }
 
@@ -94,4 +100,95 @@ var jsonifyWindow = (document) => {
   };
 
   return view;
+}
+
+// Loaded from: https://github.com/douglascrockford/JSON-js/blob/master/cycle.js
+var decycle = (object, replacer) => {
+    "use strict";
+    var objects = new WeakMap();     // object to path mappings
+
+    return (function derez(value, path) {
+
+        var old_path;   // The path of an earlier occurance of value
+        var nu;         // The new object or array
+
+        if (replacer !== undefined) {
+            value = replacer(value);
+        }
+
+        if (
+            typeof value === "object" && value !== null &&
+            !(value instanceof Boolean) &&
+            !(value instanceof Date) &&
+            !(value instanceof Number) &&
+            !(value instanceof RegExp) &&
+            !(value instanceof String)
+        ) {
+
+            old_path = objects.get(value);
+            if (old_path !== undefined) {
+                return {$ref: old_path};
+            }
+
+            objects.set(value, path);
+
+            if (Array.isArray(value)) {
+                nu = [];
+                value.forEach(function (element, i) {
+                    nu[i] = derez(element, path + "[" + i + "]");
+                });
+            } else {
+
+                nu = {};
+                Object.keys(value).forEach(function (name) {
+                    nu[name] = derez(
+                        value[name],
+                        path + "[" + JSON.stringify(name) + "]"
+                    );
+                });
+            }
+            return nu;
+        }
+        return value;
+    }(object, "$"));
+};
+
+
+if (typeof JSON.retrocycle !== "function") {
+    JSON.retrocycle = function retrocycle($) {
+        "use strict";
+
+        var px = /^\$(?:\[(?:\d+|"(?:[^\\"\u0000-\u001f]|\\([\\"\/bfnrt]|u[0-9a-zA-Z]{4}))*")\])*$/;
+
+        (function rez(value) {
+
+            if (value && typeof value === "object") {
+                if (Array.isArray(value)) {
+                    value.forEach(function (element, i) {
+                        if (typeof element === "object" && element !== null) {
+                            var path = element.$ref;
+                            if (typeof path === "string" && px.test(path)) {
+                                value[i] = eval(path);
+                            } else {
+                                rez(element);
+                            }
+                        }
+                    });
+                } else {
+                    Object.keys(value).forEach(function (name) {
+                        var item = value[name];
+                        if (typeof item === "object" && item !== null) {
+                            var path = item.$ref;
+                            if (typeof path === "string" && px.test(path)) {
+                                value[name] = eval(path);
+                            } else {
+                                rez(item);
+                            }
+                        }
+                    });
+                }
+            }
+        }($));
+        return $;
+    };
 }
